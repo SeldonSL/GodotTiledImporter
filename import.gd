@@ -32,11 +32,12 @@ func createTileset(var data, var cell_size):
 		var height = texture.get_height()
 		height -= height % int(cell_size.y)
 		var count = t["firstgid"]
+		var spacing = t["spacing"] 
 		var tiles
 		if t.has("tiles"):
 			tiles = t["tiles"]
-		for y in range(0, height, cell_size.y):
-			for x in range(0, width, cell_size.x):
+		for y in range(0, height, cell_size.y+spacing):
+			for x in range(0, width, cell_size.x+spacing):
 				var xy = Vector2(x, y)
 				var rect = Rect2(xy, size)
 				ts.create_tile(count)
