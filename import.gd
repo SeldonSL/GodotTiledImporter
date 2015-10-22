@@ -68,7 +68,7 @@ func createTileset(var data, var cell_size, var onlyused, var layers): # data = 
 		var count = t["firstgid"]
 		var spacing = t["spacing"] 
 		var tiles
-		var tiles_prop
+		var tiles_prop # for nav_tiles
 
 		if t.has("tiles"):
 			tiles = t["tiles"]
@@ -91,7 +91,7 @@ func createTileset(var data, var cell_size, var onlyused, var layers): # data = 
 					# add entire tile (deal with polygons later)
 					if t.has("tileproperties"):
 						for tilep in tiles_prop:
-
+							
 							if tilep == id and tiles_prop[tilep].has("nav"):
 								var nav_shape = NavigationPolygon.new()
 								var nav_array = Vector2Array()
