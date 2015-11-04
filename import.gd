@@ -15,6 +15,7 @@ func _ready():
 func createTileset(var data, var cell_size):
 	var ts = TileSet.new()
 	var size = cell_size
+	
 	for t in data:
 		var path = map_path.get_base_dir() + "/" + t["image"]
 		#var file_name = t["image"]
@@ -34,8 +35,14 @@ func createTileset(var data, var cell_size):
 		var count = t["firstgid"]
 		var spacing = t["spacing"] 
 		var tiles
+		var tiles_prop
+
 		if t.has("tiles"):
 			tiles = t["tiles"]
+
+		if t.has("tileproperties"):
+			tiles_prop = t["tileproperties"]
+
 		for y in range(0, height, cell_size.y+spacing):
 			for x in range(0, width, cell_size.x+spacing):
 				var xy = Vector2(x, y)
@@ -44,6 +51,26 @@ func createTileset(var data, var cell_size):
 				ts.tile_set_texture(count, texture)
 				ts.tile_set_region(count, rect)
 				var id = str(count - int(t["firstgid"]))
+				
+				# set nav property on tile for navigation
+				# add entire tile (deal with polygons later)
+				if t.has("tileproperties"):
+					for tilep in tiles_prop:
+
+						if tilep == id and tiles_prop[tilep].has("nav"):
+							var nav_shape = NavigationPolygon.new()
+							var nav_array = Vector2Array()
+								
+							nav_array.push_back(Vector2(0,0))
+							nav_array.push_back(Vector2(cell_size.x,0))
+							nav_array.push_back(Vector2(cell_size.x,cell_size.y))
+							nav_array.push_back(Vector2(0,cell_size.y))
+
+							nav_shape.add_polygon(IntArray([0,1,2,3]))
+							nav_shape.set_vertices(nav_array)
+							nav_shape.set_outline(0, nav_array)
+							ts.tile_set_navigation_polygon(count, nav_shape)
+
 
 				if t.has("tiles"):
 					for tile in tiles:
