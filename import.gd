@@ -72,6 +72,8 @@ func createTileset(var data, var cell_size, var onlyused, var layers): # data = 
 
 		if t.has("tiles"):
 			tiles = t["tiles"]
+		
+		# useful to obtain navigation tiles
 		if t.has("tileproperties"):
 			tiles_prop = t["tileproperties"]
 
